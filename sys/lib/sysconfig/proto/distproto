@@ -423,7 +423,29 @@ usr	d775
 		uid=glenda
 		gid=glenda
 		bin	d775
-			$objtype	d775
+			386	d775
+				+
+			68000	d775
+				+
+			68020	d775
+				+
+			amd64	d775
+				+
+			arm	d775
+				+
+			arm64	d775
+				+
+			power	d775
+				+
+			power64	d775
+				+
+			sparc	d775
+				+
+			sparc64	d775
+				+
+			mips	d775
+				+
+			spim	d775
 				+
 			rc	d775
 				+

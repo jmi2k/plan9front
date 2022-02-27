@@ -1,7 +1,6 @@
 # to update: cp /usr/glenda/lib/plumbing /mnt/plumb/rules
 
-editor = sam
+editor  = acme
 browser = mothra
-
 include basic
 
