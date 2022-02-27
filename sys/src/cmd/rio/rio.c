@@ -121,7 +121,7 @@ threadmain(int argc, char *argv[])
 {
 	char *initstr, *kbdin, *s;
 	char buf[256];
-	Image *i;
+	Image *i, *fill;
 	Rectangle r;
 
 	if(strstr(argv[0], ".out") == nil){
@@ -199,10 +199,12 @@ threadmain(int argc, char *argv[])
 	kbdchan = initkbd();
 	if(kbdchan == nil)
 		error("can't find keyboard");
-	wscreen = allocscreen(screen, background, 0);
+	fill = allocimage(display, screen->r, screen->chan, 1, DNofill);
+	draw(fill, fill->r, background, nil, ZP);
+	wscreen = allocscreen(screen, fill, 0);
 	if(wscreen == nil)
 		error("can't allocate screen");
-	draw(view, viewr, background, nil, ZP);
+	draw(view, viewr, fill, nil, ZP);
 	flushimage(display, 1);
 
 	timerinit();
@@ -583,7 +585,7 @@ wtopcmp(void *a, void *b)
 void
 resized(void)
 {
-	Image *im;
+	Image *im, *fill;
 	int i, j;
 	Rectangle r;
 	Point o, n;
@@ -593,11 +595,15 @@ resized(void)
 		error("failed to re-attach window");
 	freescrtemps();
 	view = screen;
+	if(wscreen != nil)
+		freeimage(wscreen->fill);
 	freescreen(wscreen);
-	wscreen = allocscreen(screen, background, 0);
+	fill = allocimage(display, screen->r, screen->chan, 1, DNofill);
+	draw(fill, fill->r, background, nil, ZP);
+	wscreen = allocscreen(screen, fill, 0);
 	if(wscreen == nil)
 		error("can't re-allocate screen");
-	draw(view, view->r, background, nil, ZP);
+	draw(view, view->r, fill, nil, ZP);
 	o = subpt(viewr.max, viewr.min);
 	n = subpt(view->clipr.max, view->clipr.min);
 	qsort(window, nwindow, sizeof(window[0]), wtopcmp);
